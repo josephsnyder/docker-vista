@@ -321,11 +321,11 @@ else
     unzip -q VistA-master.zip
     rm VistA-master.zip
     mv VistA-master VistA
-    echo "Downloading OSEHRA VistA-M"
-    curl -fsSL --progress-bar https://github.com/OSEHRA/VistA-M/archive/master.zip -o VistA-M-master.zip
+    echo "Downloading OSEHRA VistA-M from $repoPath"
+    curl -fsSL --progress-bar $repoPath -o VistA-M-master.zip
     unzip -q VistA-M-master.zip
     rm VistA-M-master.zip
-    mv VistA-M-master VistA-M
+    mv VistA-M-* VistA-M
 
     # create random string for build identification
     # source: http://ubuntuforums.org/showthread.php?t=1775099&p=10901169#post10901169

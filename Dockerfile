@@ -19,7 +19,11 @@ ADD . /opt/vista/
 
 # OSEHRA VistA
 RUN ./autoInstaller.sh -g -b && \
-	rm -rf /home/osehra/Dashboard
+    rm -rf /home/osehra/Dashboard
+
+# FOIA VistA
+#RUN ./autoInstaller.sh -g -b -i foia -a https://github.com/OSEHRA/VistA-M/archive/foia.zip && \
+#   rm -rf /home/osehra/Dashboard
 
 # WorldVistA
 #RUN ./autoInstaller.sh -g -b -s -i worldvista -a https://github.com/glilly/wvehr2-dewdrop/archive/master.zip && \
