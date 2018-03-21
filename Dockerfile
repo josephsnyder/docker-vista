@@ -2,11 +2,15 @@ FROM centos
 
 RUN echo "multilib_policy=best" >> /etc/yum.conf
 RUN yum  -y update && \
-	yum install -y gcc-c++ git xinetd perl curl python openssh-server openssh-clients expect man python-argparse sshpass wget make cmake dos2unix which unzip lsof net-tools|| true && \
+	yum install -y gcc-c++ git xinetd perl curl python openssh-server openssh-clients expect man python-argparse sshpass wget make cmake dos2unix which unzip lsof net-tools graphviz java-1.8.0-openjdk-devel|| true && \
 	yum install -y http://libslack.org/daemon/download/daemon-0.6.4-1.i686.rpm > /dev/null && \
 	package-cleanup --cleandupes && \
 	yum  -y clean all
 
+RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" && \
+	python get-pip.py && \
+	pip install xlrd
+	
 RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa && \
     ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa && \
     ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key && \
@@ -44,10 +48,10 @@ ADD . /opt/vista/
 
 # RPMS (RPMS, YottaDB, no boostrap, skip testing, and do post-install as well)
 # RPMS does not have a GTM VL Entry Point. Removing 8001 for now.
-RUN ./autoInstaller.sh -w -y -b -s -i rpms -a https://github.com/shabiel/FOIA-RPMS/archive/master.zip -p ./Common/rpmsPostInstall.sh && \
-	rm -rf /usr/local/src/VistA-Source
-ENTRYPOINT /home/rpms/bin/start.sh
-EXPOSE 22 9100 9101 9430
+#RUN ./autoInstaller.sh -w -y -b -s -i rpms -a https://github.com/shabiel/FOIA-RPMS/archive/master.zip -p ./Common/rpmsPostInstall.sh && \
+#	rm -rf /usr/local/src/VistA-Source
+#ENTRYPOINT /home/rpms/bin/start.sh
+#EXPOSE 22 9100 9101 9430
 
 # Caché Install with local DAT file
 #RUN dos2unix /opt/vista/* && \
@@ -63,3 +67,19 @@ EXPOSE 22 9100 9101 9430
 #RUN ./autoInstaller.sh -c -b -s -i vehu
 #ENTRYPOINT /opt/cachesys/vehu/bin/start.sh
 #EXPOSE 22 8001 9430 8080 57772
+
+# Caché Install and generate ViViaN and DOX
+RUN dos2unix /opt/vista/* && \
+    dos2unix /opt/vista/Cache/* && \
+    dos2unix /opt/vista/Cache/etc/init.d/* && \
+    dos2unix /opt/vista/Common/* && \
+    dos2unix /opt/vista/Dashboard/* && \
+    dos2unix /opt/vista/EWD/* && \
+    dos2unix /opt/vista/EWD/etc/init.d/* && \
+    dos2unix /opt/vista/GTM/* && \
+    dos2unix /opt/vista/GTM/bin/* && \
+    dos2unix /opt/vista/GTM/etc/init.d/*
+RUN ./autoInstaller.sh -v -i OSEHRA
+
+ENTRYPOINT /opt/cachesys/cache/bin/start.sh
+EXPOSE 22 8001 9430 8080 57772

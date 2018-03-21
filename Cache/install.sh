@@ -76,7 +76,7 @@ echo "Red Hat Enterprise Linux (Santiago) release 6" > /etc/redhat-release
 scriptdir=`dirname $0`
 
 # BaseDir
-basedir=/opt/cachesys/$instance
+basedir=/opt/cachesys/cache
 
 # Create Daemon User accounts
 ./createDaemonAccount.sh -i $instance
@@ -118,7 +118,8 @@ fi
 
 # Perform subsitutions in cpf file and copy to destination
 cp $scriptdir/cache.cpf $basedir/cache.cpf-new
-perl -pi -e 's/foia/'$instance'/g' $basedir/cache.cpf-new
+perl -pi -e 's/foia/cache/g' $basedir/cache.cpf-new
+perl -pi -e 's/vehu/cache/g' $basedir/cache.cpf-new
 perl -pi -e 's/FOIA/'${instance^^}'/g' $basedir/cache.cpf-new
 
 # Move CACHE.dat
@@ -137,7 +138,7 @@ mv /etc/redhat-release.orig /etc/redhat-release
 
 # create startup script used by docker
 echo "#!/bin/bash"                                      > $basedir/bin/start.sh
-echo 'trap "ccontrol stop '${instance}' quietly" SIGTERM' >> $basedir/bin/start.sh
+echo 'trap "ccontrol stop cache quietly" SIGTERM' >> $basedir/bin/start.sh
 echo 'echo "Starting sshd"'                             >> $basedir/bin/start.sh
 echo "/usr/sbin/sshd"                                   >> $basedir/bin/start.sh
 echo 'echo "Starting vista processes"'                  >> $basedir/bin/start.sh
@@ -145,7 +146,7 @@ echo 'cp '${basedir}'/cache.cpf '${basedir}'/cache.cpf-old' >> $basedir/bin/star
 echo 'rm '${basedir}'/cache.cpf_*'                      >> $basedir/bin/start.sh
 echo 'cp '${basedir}'/cache.cpf-new '${basedir}'/cache.cpf' >> $basedir/bin/start.sh
 echo 'find '${basedir}'/ -iname CACHE.DAT -exec touch {} \;' >>$basedir/bin/start.sh
-echo "ccontrol start ${instance}"                       >> $basedir/bin/start.sh
+echo "ccontrol start cache"                       >> $basedir/bin/start.sh
 echo '# Create a fifo so that bash can read from it to' >> $basedir/bin/start.sh
 echo '# catch signals from docker'                      >> $basedir/bin/start.sh
 echo 'rm -f ~/fifo'                                     >> $basedir/bin/start.sh

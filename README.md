@@ -82,6 +82,20 @@ password: prog
 
 password: docker
 
+## Build steps for a ViViaN/DOX generation
+
+Follow the steps above to take a Cache.dat file and have the environment set up to execute the tests for the generation of the ViViaN and DOX pages
+The autoInstaller will set up everything needed for the test but will not execute the tests during the build of the image. It will install the
+VistA and VistA-M repositories, start up the instance with the supplied Cache.DAT, and export the content into the VistA-M directory.  Then, it will
+run CMake to generate the necessary files and directories.
+
+ To execute the tests:
+
+1) Build a container with the image following the steps above
+2) cd to ```/opt/VistA-docs```
+3) Execute ```ctest``` in that directory to run the tests and generate the information
+
+
 ## VistA Access/Verify codes for non Caché installs
 
 OSEHRA VistA:
