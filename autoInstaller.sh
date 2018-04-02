@@ -432,14 +432,13 @@ if $generateViVDox; then
     #  Export first so the configuration can find the correct files to query for
     python /opt/VistA/Scripts/VistAMComponentExtractor.py -S 1 -r ./VistA-M -o /tmp/ -l /tmp/ -CN $namespace
     #
-    dos2unix -r ./VistA-M/*
     cd VistA-docs
     cp $scriptdir/viv_dox/CMakeCache.txt /opt/VistA-docs
     /usr/bin/cmake .
     # It would be nice to have the CTest command work, commenting it out for now
     # TODO: Figure out the FileManGlobalDataParser issue
     # =====================================================
-    # /usr/bin/ctest -V
+    /usr/bin/ctest
     # =====================================================
 fi
 

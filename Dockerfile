@@ -2,7 +2,7 @@ FROM centos
 
 RUN echo "multilib_policy=best" >> /etc/yum.conf
 RUN yum  -y update && \
-	yum install -y gcc-c++ git xinetd perl curl python openssh-server openssh-clients expect man python-argparse sshpass wget make cmake dos2unix which unzip lsof net-tools graphviz java-1.8.0-openjdk-devel|| true && \
+	yum install -y gcc-c++ git xinetd httpd perl curl python openssh-server openssh-clients expect man python-argparse sshpass wget make cmake dos2unix which unzip lsof net-tools graphviz java-1.8.0-openjdk-devel|| true && \
 	yum install -y http://libslack.org/daemon/download/daemon-0.6.4-1.i686.rpm > /dev/null && \
 	package-cleanup --cleandupes && \
 	yum  -y clean all
@@ -82,4 +82,4 @@ RUN dos2unix /opt/vista/* && \
 RUN ./autoInstaller.sh -v -i OSEHRA
 
 ENTRYPOINT /opt/cachesys/cache/bin/start.sh
-EXPOSE 22 8001 9430 8080 57772
+EXPOSE 22 8001 9430 80 8080 57772
