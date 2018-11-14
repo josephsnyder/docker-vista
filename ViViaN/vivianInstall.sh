@@ -140,9 +140,11 @@ echo "Starting CTest at:" $(timestamp)
 echo "Installing XINDEX patch"
 /usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -R "XINDEX"
 echo "Executing data-gathering tasks"
-/usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -E "WebPageGenerator|FileManGlobalDataParser|XINDEX"
+/usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -E "WebPageGenerator|FileManGlobalDataParser|XINDEX|GraphGenerator"
 echo "Parsing VistA Globals"
 /usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -R "FileManGlobalDataParser"
+echo "Generating Images"
+/usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -R "GraphGenerator"
 echo "Generating ViViaN and DOX HTML"
 /usr/bin/ctest -V -j $(grep -c ^processor /proc/cpuinfo) -R "WebPageGenerator"
 echo "Ending CTest at:" $(timestamp)
